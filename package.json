@@ -1,0 +1,14 @@
+{
+  "name": "@clab-team/r326-gcal",
+  "version": "0.0.0",
+  "description": "Fetch r326.com and export to Google Calendar",
+  "main": "index.js",
+  "repository": "https://github.com/clab-team/r326-gcal.git",
+  "author": "Kazumi Inada <hello@nandenjin.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@google/clasp": "^2.2.1",
+    "@types/google-apps-script": "^0.0.58"
+  }
+}
