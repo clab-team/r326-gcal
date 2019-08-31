@@ -13,6 +13,8 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'no-undef': 'off',
+    '@typescript-eslint/member-delimiter-style': 'off',
     'prettier/prettier': [
       'error',
       {
