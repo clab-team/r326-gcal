@@ -12,5 +12,32 @@
 * [Google Calendar](https://calendar.google.com/calendar/embed?src=q2thfrpju4gmkrqcrpq83gpe5k%40group.calendar.google.com&ctz=Asia%2FTokyo)
 
 ## Usage
-`r326-gcal`は、[Google Apps Script](https://script.google.com)を基盤として動作します。Googleサービスへのログインが簡単に利用できるほか、定期実行が簡単
+`r326-gcal`は、[Google Apps Script](https://script.google.com)を基盤として動作します。Googleサービスへのログインを簡素化できる他、定期実行が簡単に設定できる利点があります。
 
+デプロイのために[Node.js](https://nodejs.org/ja/)および[yarn](https://yarnpkg.com/lang/ja/)を利用します。
+
+```shell
+# 依存パッケージのインストール
+$ yarn
+
+# Google Apps Scriptを操作するclaspのログイン操作
+$ npx clasp login
+
+# - claspで新規にGoogle Apps Scriptのプロジェクトを作成、割り当て
+#   プロジェクトタイプを選択する必要がある場合は "standalone" を選びます
+npx clasp create [PROJECT_NAME] --rootDir src
+
+# デプロイ
+# - Google Apps Scriptにデプロイが行われます
+$ yarn deploy
+```
+* [script.google.com](https://script.google.com)から、`index.gs`に含まれる関数`sync`を実行することで、同期が行われます。
+  * 初回の実行を行う際に、プロジェクトを作成したアカウントへの認証が行われます。
+* Google Apps Scriptのコンソールからトリガーを作成することで定期実行を行うことができます。
+
+## dev
+```
+# コードのLintにESLintを導入しています。
+$ yarn lint
+$ yarn lint --fix
+```
