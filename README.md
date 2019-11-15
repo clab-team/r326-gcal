@@ -14,6 +14,8 @@
 ## Usage
 :warning: このスクリプトは、実行時点でりざぶ郎に存在しない予定をGoogleカレンダーから消去します。 **既存のGoogleカレンダーに誤って連携し、予定を消去することのないようにご注意ください。**
 
+:warning: Once be executed, this script will erase all events on Google Calendar that not in r326.com. **Be careful not to target Google Calendar that already used for any other purposes, or you will lose events on Google Calendar.**
+
 ---
 `r326-gcal`は、[Google Apps Script](https://script.google.com)を基盤として動作します。Googleサービスへのログインを簡素化できる他、定期実行が簡単に設定できる利点があります。
 
