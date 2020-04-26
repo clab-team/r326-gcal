@@ -1,14 +1,22 @@
 import { getEvents } from './r326'
 
-const r326Id: string = PropertiesService.getScriptProperties().getProperty('r326Id')
-const calendarId: string = PropertiesService.getScriptProperties().getProperty('calendarId')
+const r326Id: string = PropertiesService.getScriptProperties().getProperty(
+  'r326Id'
+)
+const calendarId: string = PropertiesService.getScriptProperties().getProperty(
+  'calendarId'
+)
 
 if (!r326Id) {
-  throw new Error('[r326-gcal] r326Id is not specified. Please set it to ScriptProperties.')
+  throw new Error(
+    '[r326-gcal] r326Id is not specified. Please set it to ScriptProperties.'
+  )
 }
 
 if (!calendarId) {
-  throw new Error('[r326-gcal] calendarId is not specified. Please set it to ScriptProperties.')
+  throw new Error(
+    '[r326-gcal] calendarId is not specified. Please set it to ScriptProperties.'
+  )
 }
 
 export function sync(): void {
@@ -17,12 +25,12 @@ export function sync(): void {
   const to = new Date(Date.now() + 2 * 30 * 24 * 60 * 60 * 1000)
 
   const srcEvents = getEvents(r326Id, from, to)
-  
+
   const calendar = CalendarApp.getCalendarById(calendarId)
   let calendarEvents = calendar.getEvents(from, to)
 
   const matchCalEvents: GoogleAppsScript.Calendar.CalendarEvent[][][] = []
-  
+
   for (let i = 0; i < calendarEvents.length; i++) {
     const cal = calendarEvents[i]
     const cTitle = cal.getTitle()
@@ -41,9 +49,14 @@ export function sync(): void {
       const isAuthorMatched = sAuthor == cAuthor
       const isStartMatched = sStart.getTime() == cStart.getTime()
       const isEndMatched = sEnd.getTime() == cEnd.getTime()
-      
-      const matchCount = [isTitleMatched, isAuthorMatched, isStartMatched, isEndMatched].filter(x => x).length
-      if(matchCount > 0) {
+
+      const matchCount = [
+        isTitleMatched,
+        isAuthorMatched,
+        isStartMatched,
+        isEndMatched
+      ].filter(x => x).length
+      if (matchCount > 0) {
         matchCalEvents[j] = matchCalEvents[j] || []
         matchCalEvents[j][matchCount] = matchCalEvents[j][matchCount] || []
         matchCalEvents[j][matchCount].push(cal)
@@ -54,8 +67,9 @@ export function sync(): void {
   console.info(`Checking for ${srcEvents.length} events...`)
   for (let i = 0; i < srcEvents.length; i++) {
     const src = srcEvents[i]
-    let matchedEvent: GoogleAppsScript.Calendar.CalendarEvent = null, needsToUpdate = true
-    if(matchCalEvents[i]) {
+    let matchedEvent: GoogleAppsScript.Calendar.CalendarEvent = null,
+      needsToUpdate = true
+    if (matchCalEvents[i]) {
       // 3項目一致までは同じとみなす
       for (let j = 4; j >= 3; j--) {
         if (matchCalEvents[i][j] && matchCalEvents[i][j].length > 0) {
@@ -68,7 +82,7 @@ export function sync(): void {
 
     if (matchedEvent) {
       calendarEvents = calendarEvents.filter(c => c !== matchedEvent)
-      if(needsToUpdate) {
+      if (needsToUpdate) {
         console.log('* Update: ' + src.text)
         matchedEvent.setTitle(src.text)
         matchedEvent.setTime(src.start, src.end)
@@ -79,8 +93,8 @@ export function sync(): void {
       console.log('* Create: ' + src.text)
       matchedEvent = calendar.createEvent(src.text, src.start, src.end)
     }
-    
-    if(needsToUpdate) {
+
+    if (needsToUpdate) {
       matchedEvent.setTag('author', src.author)
       matchedEvent.setDescription(
         `${src.text || '（詳細情報なし）'} | 利用者: ${src.author}
