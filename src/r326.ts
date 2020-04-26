@@ -7,23 +7,14 @@ export interface CalendarEvent {
   author: string
 }
 
-export function getStatusId(source: string): string {
-  if (source.match(/statusId="([0-9_]+)"/)) {
-    return RegExp.$1
-  } else {
-    null
-  }
-}
-
 export function getEventsByYM(
   id: string,
-  statusId: string,
   yyyy: number,
   mm: number
 ): Array<CalendarEvent> {
   const content = getUrl(
     `https://www.r326.com/b/main.aspx` +
-      `?id=${id}&mode=2&status=${statusId}&all=all&date=${yyyy}/${mm + 1}/1`
+      `?id=${id}&mode=2&all=all&date=${yyyy}/${mm + 1}/1`
   )
   if (content.match(/cvdata=new Array\((".*[^\\]",?)*\);/g)) {
     const events: CalendarEvent[] = []
@@ -73,9 +64,6 @@ export function getEvents(
   from: Date,
   to: Date
 ): Array<CalendarEvent> {
-  const firstPage = getUrl(`https://www.r326.com/b/main.aspx?id=${id}`)
-  const statusId = getStatusId(firstPage)
-
   if (from > to) [from, to] = [to, from]
 
   const fromY = from.getFullYear()
@@ -88,7 +76,7 @@ export function getEvents(
   let y = fromY
   let m = fromM
   for (; y < toY || m <= toM; ) {
-    result.push(...getEventsByYM(id, statusId, y, m))
+    result.push(...getEventsByYM(id, y, m))
     m++
     if (m >= 13) {
       m = 1
