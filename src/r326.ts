@@ -23,7 +23,7 @@ export function getEventsByYM(
 ): Array<CalendarEvent> {
   const content = getUrl(
     `https://www.r326.com/b/main.aspx` +
-      `?id=${id}&mode=2&status=${statusId}&date=${yyyy}/${mm + 1}/1`
+      `?id=${id}&mode=2&status=${statusId}&all=all&date=${yyyy}/${mm + 1}/1`
   )
   if (content.match(/cvdata=new Array\((".*[^\\]",?)*\);/g)) {
     const events: CalendarEvent[] = []
