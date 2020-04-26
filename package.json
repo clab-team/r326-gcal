@@ -1,6 +1,6 @@
 {
   "name": "@clab-team/r326-gcal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fetch r326.com and export to Google Calendar",
   "main": "index.js",
   "repository": "https://github.com/clab-team/r326-gcal.git",
