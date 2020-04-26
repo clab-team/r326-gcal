@@ -54,7 +54,7 @@ export function getEventsByYM(
 
     return events
   } else {
-    console.error('Cannot fetch target page.', id, statusId, yyyy, mm)
+    console.error('Cannot fetch target page.', id, yyyy, mm)
     return []
   }
 }
