@@ -26,33 +26,42 @@ export function getEventsByYM(
       `?id=${id}&mode=2&status=${statusId}&date=${yyyy}/${mm + 1}/1`
   )
   if (content.match(/cvdata=new Array\((".*[^\\]",?)*\);/g)) {
-    return RegExp.$1
-      .split(',')
-      .map(t => t.replace(/(^"|"$)/g, ''))
-      .map(source => {
-        const [dateStr, text, startStr, endStr, author] = source.split('\t')
-        const evt: CalendarEvent = {
-          text,
-          author,
-          start: new Date(
-            `${yyyy}/${mm + 1}/${dateStr}` +
-              ' ' +
-              `${startStr.substr(0, 2)}:${startStr.substr(2, 2)}`
-          ),
-          end: new Date(
-            `${yyyy}/${mm + 1}/${dateStr}` +
-              ' ' +
-              `${endStr.substr(0, 2)}:${endStr.substr(2, 2)}`
-          )
-        }
+    const events: CalendarEvent[] = []
 
-        // 00:00までの予定はインクリメントする
-        if (endStr === '0000') {
-          evt.end.setTime(evt.end.getTime() + 24 * 60 * 60 * 1000)
-        }
+    const sources = RegExp.$1.split(',').map(t => t.replace(/(^"|"$)/g, ''))
 
-        return evt
-      })
+    for (const source of sources) {
+      if (!source.match(/^[0-9]+\t.+?\t[0-9]{4}\t[0-9]{4}\t.+/)) {
+        console.warn(`Invalid source: "${source}". Skipping`)
+        continue
+      }
+
+      const [dateStr, text, startStr, endStr, author] = source.split('\t')
+
+      const evt: CalendarEvent = {
+        text,
+        author,
+        start: new Date(
+          `${yyyy}/${mm + 1}/${dateStr}` +
+            ' ' +
+            `${startStr.substr(0, 2)}:${startStr.substr(2, 2)}`
+        ),
+        end: new Date(
+          `${yyyy}/${mm + 1}/${dateStr}` +
+            ' ' +
+            `${endStr.substr(0, 2)}:${endStr.substr(2, 2)}`
+        )
+      }
+
+      // 00:00までの予定はインクリメントする
+      if (endStr === '0000') {
+        evt.end.setTime(evt.end.getTime() + 24 * 60 * 60 * 1000)
+      }
+
+      events.push(evt)
+    }
+
+    return events
   } else {
     console.error('Cannot fetch target page.', id, statusId, yyyy, mm)
     return []
