@@ -1,11 +1,9 @@
 import { getEvents } from './r326'
 
-const r326Id: string = PropertiesService.getScriptProperties().getProperty(
-  'r326Id'
-)
-const calendarId: string = PropertiesService.getScriptProperties().getProperty(
-  'calendarId'
-)
+const r326Id: string =
+  PropertiesService.getScriptProperties().getProperty('r326Id')
+const calendarId: string =
+  PropertiesService.getScriptProperties().getProperty('calendarId')
 
 if (!r326Id) {
   throw new Error(
@@ -54,8 +52,8 @@ export function sync(): void {
         isTitleMatched,
         isAuthorMatched,
         isStartMatched,
-        isEndMatched
-      ].filter(x => x).length
+        isEndMatched,
+      ].filter((x) => x).length
       if (matchCount > 0) {
         matchCalEvents[j] = matchCalEvents[j] || []
         matchCalEvents[j][matchCount] = matchCalEvents[j][matchCount] || []
@@ -81,7 +79,7 @@ export function sync(): void {
     }
 
     if (matchedEvent) {
-      calendarEvents = calendarEvents.filter(c => c !== matchedEvent)
+      calendarEvents = calendarEvents.filter((c) => c !== matchedEvent)
       if (needsToUpdate) {
         console.log('* Update: ' + src.text)
         matchedEvent.setTitle(src.text)

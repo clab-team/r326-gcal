@@ -19,7 +19,7 @@ export function getEventsByYM(
   if (content.match(/cvdata=new Array\((".*[^\\]",?)*\);/g)) {
     const events: CalendarEvent[] = []
 
-    const sources = RegExp.$1.split(',').map(t => t.replace(/(^"|"$)/g, ''))
+    const sources = RegExp.$1.split(',').map((t) => t.replace(/(^"|"$)/g, ''))
 
     for (const source of sources) {
       if (!source.match(/^[0-9]+\t.+?\t[0-9]{4}\t[0-9]{4}\t.+/)) {
@@ -41,7 +41,7 @@ export function getEventsByYM(
           `${yyyy}/${mm + 1}/${dateStr}` +
             ' ' +
             `${endStr.substr(0, 2)}:${endStr.substr(2, 2)}`
-        )
+        ),
       }
 
       // 00:00までの予定はインクリメントする
@@ -84,5 +84,5 @@ export function getEvents(
     }
   }
 
-  return result.filter(event => from <= event.start && event.end <= to)
+  return result.filter((event) => from <= event.start && event.end <= to)
 }
