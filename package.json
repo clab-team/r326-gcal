@@ -9,7 +9,8 @@
   "private": true,
   "scripts": {
     "deploy": "clasp push",
-    "lint": "eslint --ignore-path .gitignore --ext ts,js ."
+    "lint": "eslint --ext ts,js .",
+    "lintfix": "eslint --fix --ext ts,js ."
   },
   "devDependencies": {
     "@google/clasp": "^2.3.0",
